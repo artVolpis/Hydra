@@ -81,16 +81,9 @@ public func await<T>(in context: Context? = nil, _ promise: Promise<T>) throws -
 /// - Throws: an exception if operation fails
 @available(iOS 15.0.0, *)
 @discardableResult
-@available(*, deprecated, renamed: "Hydra.await")
-public func await<T>(in context: Context = .background, _ body: @escaping ((_ fulfill: @escaping (T) -> (), _ reject: @escaping (Error) -> (), _ operation: PromiseStatus) throws -> ())) throws -> T {
-    return try Hydra.await(in: context, body) as! T
-}
-
-@available(iOS 15.0.0, *)
-@discardableResult
 public func await<T>(in context: Context = .background, _ body: @escaping ((_ fulfill: @escaping (T) -> (), _ reject: @escaping (Error) -> (), _ operation: PromiseStatus) throws -> ())) async throws -> T {
     let promise = Promise<T>(in: context, body)
-    return try await(in: context, promise) as! T
+    return try Hydra.await(in: context, promise) as! T
 }
 
 public enum Hydra {
