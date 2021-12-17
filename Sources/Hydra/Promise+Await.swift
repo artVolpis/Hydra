@@ -85,6 +85,13 @@ public func await<T>(in context: Context = .background, _ body: @escaping ((_ fu
     return try Hydra.await(in: context, body)
 }
 
+@available(iOS 15.0.0, *)
+@discardableResult
+public func await<T>(in context: Context = .background, _ body: @escaping ((_ fulfill: @escaping (T) -> (), _ reject: @escaping (Error) -> (), _ operation: PromiseStatus) throws -> ())) async throws -> T {
+    let promise = Promise<T>(in: context, body)
+    return try await(in: context, promise) as! T
+}
+
 public enum Hydra {
     
     /// Awaits that the given promise fulfilled with its value or throws an error if the promise fails
